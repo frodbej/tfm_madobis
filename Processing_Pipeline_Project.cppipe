@@ -1,0 +1,455 @@
+CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:421
+GitHash:
+ModuleCount:26
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['Loading images of the experiments to analyse them.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "[\/]\.")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['Extracting metadata from file name and matching ID metadata from filename with ID metadata from CSV file to get the whole metadata.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{"FileLocation": "text", "Frame": "float", "Series": "text"}
+    Extraction method count:2
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:^(?P<ID>[0-9]{5})_Set9_TP(?P<Experiment>.*)_(?P<Surface>[1-2])_(?P<Plate>[1-2])_(?P<Position>[0-9]{4})_(?P<Replica>[1-2])_(?P<Channel>.*)_CI.tiff
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Default Input Folder sub-folder|Desktop\\pruebaCP
+    Match file and image metadata:[{'CSV Metadata': 'Channel', 'Image Metadata': 'Frame'}]
+    Use case insensitive matching?:No
+    Metadata file name:Metadata_channels.csv
+    Does cached metadata exist?:No
+    Metadata extraction method:Import from file
+    Metadata source:File name
+    Regular expression to extract from file name:^(?P<Plate>.*)_(?P<Well>[A-P][0-9]{2})_s(?P<Site>[0-9])_w(?P<ChannelNumber>[0-9])
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain "")
+    Metadata file location:Default Input Folder|HTS_LIB1_MDA_TPA_2_CI
+    Match file and image metadata:[{'CSV Metadata': '\ufeffID', 'Image Metadata': 'ID'}]
+    Use case insensitive matching?:No
+    Metadata file name:Metadata_ID_Exp_ABD.csv
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['DAPI -> DNA', 'FITC -> tubulin', 'TRTC -> actin']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:3
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (metadata does Channel "DAPI")
+    Name to assign these images:DNA
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image bit-depth
+    Maximum intensity:255.0
+    Select the rule criteria:and (metadata does Channel "FITC")
+    Name to assign these images:tub
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image bit-depth
+    Maximum intensity:255.0
+    Select the rule criteria:and (metadata does Channel "TRTC")
+    Name to assign these images:act
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image bit-depth
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:Blank
+
+GrayToColor:[module_num:5|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:['Generating RGB images']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select a color scheme:RGB
+    Rescale intensity:No
+    Select the image to be colored red:act
+    Select the image to be colored green:tub
+    Select the image to be colored blue:DNA
+    Name the output image:RGB
+    Relative weight for the red image:1.0
+    Relative weight for the green image:1.0
+    Relative weight for the blue image:1.0
+    Select the image to be colored cyan:Leave this black
+    Select the image to be colored magenta:Leave this black
+    Select the image to be colored yellow:Leave this black
+    Select the image that determines brightness:Leave this black
+    Relative weight for the cyan image:1.0
+    Relative weight for the magenta image:1.0
+    Relative weight for the yellow image:1.0
+    Relative weight for the brightness image:1.0
+    Hidden:1
+    Image name:None
+    Color:#ff0000
+    Weight:1.0
+
+SaveImages:[module_num:6|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:['Saving RGB images']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:RGB
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:RGB
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_RGB
+    Saved file format:tiff
+    Output file location:Default Output Folder sub-folder|RGB
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+ImageMath:[module_num:7|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:['Adding actin images with tubulin images to generate cytoskeleton images']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:Add
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Replace invalid values with 0?:Yes
+    Ignore the image masks?:No
+    Name the output image:Cytoskeleton
+    Image or measurement?:Image
+    Select the first image:act
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:tub
+    Multiply the second image by:1.0
+    Measurement:
+
+IdentifyPrimaryObjects:[module_num:8|svn_version:'Unknown'|variable_revision_number:15|show_window:True|notes:['Using DAPI to identify primary objects using Robust Background method. Primary objects are nuclei.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:DNA
+    Name the primary objects to be identified:Nuclei
+    Typical diameter of objects, in pixel units (Min,Max):20,120
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:30
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:No
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Adaptive
+    Thresholding method:Robust Background
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.5
+    Lower and upper bounds on threshold:0.1,0.5
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:100
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Robust Background
+
+FlagImage:[module_num:9|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:['Quality control. Flag images with less than 1 nucleus or more than 200 nuclei.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:1
+    Hidden:1
+    Name the flag's category:Metadata
+    Name the flag:QCNuclei
+    How should measurements be linked?:Flag if any fail
+    Skip image set if flagged?:Yes
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:Count_Nuclei
+    Flag images based on low values?:Yes
+    Minimum value:1
+    Flag images based on high values?:Yes
+    Maximum value:200
+    Rules file location:Elsewhere...|
+    Rules file name:rules.txt
+    Class number:
+    Ignore flag skips on last cycle?:No
+
+IdentifySecondaryObjects:[module_num:10|svn_version:'Unknown'|variable_revision_number:10|show_window:True|notes:['Using nuclei to identify the cytoskeleton as secondary object. This secondary object is the cell. Discarding secondary objects touching the border and nuclei associated with them.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Nuclei
+    Name the objects to be identified:Cell
+    Select the method to identify the secondary objects:Propagation
+    Select the input image:Cytoskeleton
+    Number of pixels by which to expand the primary objects:10
+    Regularization factor:0.05
+    Discard secondary objects touching the border of the image?:Yes
+    Discard the associated primary objects?:Yes
+    Name the new primary objects:FilteredNuclei
+    Fill holes in identified objects?:Yes
+    Threshold setting version:12
+    Threshold strategy:Adaptive
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:Yes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:100
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+IdentifyTertiaryObjects:[module_num:11|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['Identifying the cytoplasm subtracting nuclei to cell.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the larger identified objects:Cell
+    Select the smaller identified objects:Nuclei
+    Name the tertiary objects to be identified:Cytoplasm
+    Shrink smaller object prior to subtraction?:Yes
+
+ConvertObjectsToImage:[module_num:12|svn_version:'Unknown'|variable_revision_number:1|show_window:True|notes:['Generating binary image of the cell for skeleton module.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Cell
+    Name the output image:CellImage
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+MeasureImageAreaOccupied:[module_num:13|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:['Measuring occupied area and perimeter of cells and filtered nuclei.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Measure the area occupied by:Objects
+    Select binary images to measure:
+    Select object sets to measure:Cell, FilteredNuclei
+
+MeasureObjectIntensity:[module_num:14|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:['Measuring actin and tubulin intensity on cell objects.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:act, tub
+    Select objects to measure:Cell
+
+MeasureObjectIntensity:[module_num:15|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:['Measuring DNA intensity on nuclei objects']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DNA
+    Select objects to measure:FilteredNuclei
+
+MeasureObjectIntensityDistribution:[module_num:16|svn_version:'Unknown'|variable_revision_number:6|show_window:True|notes:['Measuring actin and tubulin intensity distribution.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:act, tub
+    Hidden:1
+    Hidden:1
+    Hidden:1
+    Calculate intensity Zernikes?:Magnitudes and phase
+    Maximum zernike moment:9
+    Select objects to measure:Cell
+    Object to use as center?:Centers of other objects
+    Select objects to use as centers:FilteredNuclei
+    Scale the bins?:Yes
+    Number of bins:3
+    Maximum radius:100
+    Image:act
+    Objects to display:Do not use
+    Number of bins:3
+    Measurement:Fraction at Distance
+    Color map:Blues
+    Save display as image?:Yes
+    Output image name:Heatmap_actin_fraction
+
+MeasureObjectSizeShape:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['Measuring size and shape parameters for cell and filtered nuclei objects.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Cell, FilteredNuclei
+    Calculate the Zernike features?:Yes
+    Calculate the advanced features?:Yes
+
+MeasureObjectNeighbors:[module_num:18|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['Measuring cell neighbors and generating image with a color gradient according to number of neighbors.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:Cell
+    Select neighboring objects to measure:Cell
+    Method to determine neighbors:Adjacent
+    Neighbor distance:5
+    Consider objects discarded for touching image border?:Yes
+    Retain the image of objects colored by numbers of neighbors?:Yes
+    Name the output image:ObjectNeighborCount
+    Select colormap:Blues
+    Retain the image of objects colored by percent of touching pixels?:No
+    Name the output image:PercentTouching
+    Select colormap:Oranges
+
+MeasureObjectSkeleton:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:['Measuring cells skeleton using filtered nuclei as seeds.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the seed objects:FilteredNuclei
+    Select the skeletonized image:CellImage
+    Retain the branchpoint image?:Yes
+    Name the branchpoint image:BranchpointImageCell
+    Fill small holes?:Yes
+    Maximum hole size:10
+    Export the skeleton graph relationships?:No
+    Intensity image:None
+    File output directory:Default Output Folder|
+    Vertex file name:vertices.csv
+    Edge file name:edges.csv
+
+MeasureTexture:[module_num:20|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:['Measuring actin and tubulin texture on cell objects.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:act, tub
+    Select objects to measure:Cell
+    Enter how many gray levels to measure the texture at:256
+    Hidden:1
+    Measure whole images or objects?:Objects
+    Texture scale to measure:3
+
+MeasureTexture:[module_num:21|svn_version:'Unknown'|variable_revision_number:7|show_window:True|notes:['Measuring DNA texture on filtered nuclei objects.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select images to measure:DNA
+    Select objects to measure:FilteredNuclei
+    Enter how many gray levels to measure the texture at:256
+    Hidden:1
+    Measure whole images or objects?:Objects
+    Texture scale to measure:3
+
+OverlayOutlines:[module_num:22|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:['Generating overlay images with nuclei and cell outlines on the RGB image.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:True]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:RGB
+    Name the output image:Overlay
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Thick
+    Select outline color:#00A629
+    Select objects to display:FilteredNuclei
+    Select outline color:yellow
+    Select objects to display:Cell
+
+SaveImages:[module_num:23|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:['Saving intensity distribution images']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:Heatmap_actin_fraction
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:act
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_actin_fraction
+    Saved file format:tiff
+    Output file location:Default Output Folder sub-folder|IntensityDistribution
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:24|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:['Saving overlay outlines images.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:Overlay
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_Overlay
+    Saved file format:tiff
+    Output file location:Default Output Folder sub-folder|Overlay
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:25|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:['Saving neighbor count images.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:ObjectNeighborCount
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_Neighbor
+    Saved file format:tiff
+    Output file location:Default Output Folder sub-folder|Neighbor
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:No
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+ExportToDatabase:[module_num:26|svn_version:'Unknown'|variable_revision_number:28|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Database type:SQLite
+    Database name:DefaultDB
+    Add a prefix to table names?:Yes
+    Table prefix:TestA_CP
+    Output file location:Default Output Folder|
+    Create a CellProfiler Analyst properties file?:Yes
+    Database host:
+    Username:
+    Password:
+    Name the SQLite database file:TestA_DB.db
+    Calculate the per-image mean values of object measurements?:Yes
+    Calculate the per-image median values of object measurements?:Yes
+    Calculate the per-image standard deviation values of object measurements?:Yes
+    Calculate the per-well mean values of object measurements?:No
+    Calculate the per-well median values of object measurements?:No
+    Calculate the per-well standard deviation values of object measurements?:No
+    Export measurements for all objects to the database?:Select...
+    Select the objects:Cell,FilteredNuclei
+    Maximum # of characters in a column name:64
+    Create one table per object, a single object table or a single object view?:Single object table
+    Enter an image url prepend if you plan to access your files via http:
+    Write image thumbnails directly to the database?:No
+    Select the images for which you want to save thumbnails:
+    Auto-scale thumbnail pixel intensities?:Yes
+    Select the plate type:384
+    Select the plate metadata:Plate
+    Select the well metadata:Well
+    Include information for all images, using default values?:Yes
+    Properties image group count:1
+    Properties group field count:4
+    Properties filter field count:0
+    Workspace measurement count:1
+    Experiment name:TestA_CP
+    Which objects should be used for locations?:FilteredNuclei
+    Enter a phenotype class table name if using the Classifier tool in CellProfiler Analyst:
+    Export object relationships?:Yes
+    Overwrite without warning?:Never
+    Access CellProfiler Analyst images via URL?:No
+    Select the classification type:Object
+    Select an image to include:None
+    Use the image name for the display?:Yes
+    Image name:Channel1
+    Channel color:red
+    Do you want to add group fields?:Yes
+    Enter the name of the group:ByWell
+    Enter the per-image columns which define the group, separated by commas:ImageNumber, Image_Metadata_Plate, Image_Metadata_Well
+    Enter the name of the group:ByGene
+    Enter the per-image columns which define the group, separated by commas:ImageNumber, Image_Metadata_Gene
+    Enter the name of the group:ByCondition
+    Enter the per-image columns which define the group, separated by commas:ImageNumber, Image_Metadata_Condition
+    Enter the name of the group:ByExperiment
+    Enter the per-image columns which define the group, separated by commas:ImageNumber, Image_Metadata_Experiment
+    Do you want to add filter fields?:No
+    Automatically create a filter for each plate?:No
+    Create a CellProfiler Analyst workspace file?:No
+    Select the measurement display tool:ScatterPlot
+    Type of measurement to plot on the X-axis:Image
+    Enter the object name:None
+    Select the X-axis measurement:None
+    Select the X-axis index:ImageNumber
+    Type of measurement to plot on the Y-axis:Image
+    Enter the object name:None
+    Select the Y-axis measurement:None
+    Select the Y-axis index:ImageNumber
