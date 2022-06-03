@@ -1,6 +1,8 @@
 # TFM MADOBIS
 This is the readme file that contains the information about the code and data used in the TFM that are available in this repository.
 
+The processing pipeline developed in CellProfiler for this project is available in cppipe format. This pipeline has been used to generate the output data used in the analysis from image raw data.
+
 The code and data corresponding to gene network analysis are available in the folder "gene_network_analysis".
 
 The code and a sample of per_image and per_object data due to the large size of the files are available in the folder "image_analysis". Complete raw data can be accessed upon request to the authors.
