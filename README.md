@@ -11,6 +11,8 @@ The code and data corresponding to the analysis of the classifier results are av
 
 ## Description of the project
 
+![Overview of the project](figs/project_overview.png )
+
 Cell shape provides valuable information about cellular phenotype and the cell’s physiological state due to the connection between morphology and phenotype. Thus, morphological analysis could allow us to understand relevant underlying mechanisms in diseases with an important morphological component such as cancer, particularly in the metastatic process.
 
 Furthermore, advances in automated microscopy have made it possible to develop image-based high-throughput cell profiling assays, that allow defining complex cellular phenotypes through the extraction of multiple features for each cell of the population. Thus, with this approach, we can generate large quantities of data at single-cell resolution to identify genes involved in a biological process and heterogeneous cell behaviors.
