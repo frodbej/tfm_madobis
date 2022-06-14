@@ -1,4 +1,4 @@
-# 🔬💻 TFM MADOBIS - An image analysis pipeline for detecting different cell phenotypes in breast cancer cells 🔬💻
+# TFM MADOBIS - An image analysis pipeline for detecting different cell phenotypes in breast cancer cells 🔬💻
 This is the readme file that contains the information about the code and data used in the TFM that are available in this repository.
 
 The processing pipeline developed in CellProfiler for this project is available in cppipe format. This pipeline has been used to generate the output data used in the analysis from image raw data.
