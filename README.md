@@ -7,7 +7,7 @@ The code and data corresponding to gene network analysis are available in the fo
 
 The code and a sample of per_image and per_object data due to the large size of the files are available in the folder "image_data_analysis". Complete raw data can be accessed upon request to the authors.
 
-The code and data corresponding to the analysis of the classifier results are available in the folder "classifier_results_analysis".
+The code and data corresponding to the analysis of the classifier results are available in the folder "classifier_results_analysis". In this folder is also provided the file with the Random Forest algorithm used to classify the phenotype of cells with long projections.
 
 ## Description of the project
 
